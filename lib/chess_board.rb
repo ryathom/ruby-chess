@@ -8,8 +8,10 @@ class ChessBoard
   end
 
   def visualize_board
+    puts nil
+
     @board.each do |row|
-      string = '| '
+      string = '  | '
       row.each do |space|
         if space.nil?
           string += '_'
@@ -20,14 +22,34 @@ class ChessBoard
       end
       puts string
     end
+
     puts nil
   end
 
   def initial_setup
-    8.times { |i| @board[0][i] = ChessPiece.new('black')}
-    8.times { |i| @board[1][i] = ChessPiece.new('black')}
+    @board[0] = setup_non_pawns('black')
+    @board[1] = setup_pawns('black')
 
-    8.times { |i| @board[6][i] = ChessPiece.new('white')}
-    8.times { |i| @board[7][i] = ChessPiece.new('white')}
-  end 
+    @board[6] = setup_pawns('white')
+    @board[7] = setup_non_pawns('white')
+  end
+
+  def setup_pawns(color)
+    Array.new(8) { Pawn.new(color) }
+  end
+
+  def setup_non_pawns(color)
+    row = []
+
+    row << Rook.new(color)
+    row << Knight.new(color)
+    row << Bishop.new(color)
+    row << Queen.new(color)
+    row << King.new(color)
+    row << Bishop.new(color)
+    row << Knight.new(color)
+    row << Rook.new(color)
+
+    row
+  end
 end
