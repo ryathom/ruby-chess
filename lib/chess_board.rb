@@ -52,4 +52,26 @@ class ChessBoard
 
     row
   end
+
+  def move_piece(piece, x, y)
+    store = piece
+    remove_piece(piece)
+    @board[x][y] = store
+  end
+
+  def get_piece(x, y)
+    @board[x][y]
+  end
+
+  def remove_piece(piece)
+    @board.each_with_index do |row, i|
+      row.each_with_index do |space, j|
+        if space == piece
+          @board[i][j] = nil
+          return piece
+        end
+      end
+    end
+    nil
+  end
 end
