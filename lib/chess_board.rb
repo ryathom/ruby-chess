@@ -10,8 +10,9 @@ class ChessBoard
   def visualize_board
     puts nil
 
-    @board.each do |row|
-      string = '  | '
+    @board.each_with_index do |row, idx|
+      n = 8 - idx
+      string = " #{n} | "
       row.each do |space|
         if space.nil?
           string += '_'
@@ -23,6 +24,7 @@ class ChessBoard
       puts string
     end
 
+    puts '     a   b   c   d   e   f   g   h'
     puts nil
   end
 
