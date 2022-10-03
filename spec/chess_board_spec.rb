@@ -56,4 +56,24 @@ describe ChessBoard do
       end
     end
   end
+
+  describe '#lookup' do
+    it 'translates a1 to [7,0]' do
+      address = 'a1'
+      expect(chessboard.lookup(address)).to eql([7, 0])
+    end
+
+    it 'translates h8 to [0,7]' do
+      address = 'h8'
+      expect(chessboard.lookup(address)).to eql([0, 7])
+    end
+
+    it 'output works with remove_piece method' do
+      address = 'a7'
+      location = chessboard.lookup(address)
+      chessboard.remove_piece_at(location)
+
+      expect(chessboard.get_piece([1, 0])).to be nil
+    end
+  end
 end

@@ -7,6 +7,8 @@ class ChessBoard
     initial_setup
   end
 
+  FILEREF = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].freeze
+
   def visualize_board
     puts nil
 
@@ -55,6 +57,17 @@ class ChessBoard
     row
   end
 
+  def lookup(address)
+    address = address.split('')
+    file = address[0] #letter
+    rank = address[1] #number
+
+    file = FILEREF.index(file)
+    rank = 8 - rank.to_i
+
+    [rank, file]
+  end
+
   def move_piece(piece, location)
     x = location[0]
     y = location[1]
@@ -77,5 +90,10 @@ class ChessBoard
       end
     end
     nil
+  end
+
+  def remove_piece_at(location)
+    piece = get_piece(location)
+    remove_piece(piece)
   end
 end
