@@ -54,9 +54,7 @@ class ChessBoard
   end
 
   def move_piece(piece, x, y)
-    store = piece
-    remove_piece(piece)
-    @board[x][y] = store
+    @board[x][y] = remove_piece(piece)
   end
 
   def get_piece(x, y)
