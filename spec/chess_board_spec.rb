@@ -8,12 +8,14 @@ describe ChessBoard do
       piece = chessboard.get_piece([1,0])
       expect(piece.black?).to be true
       expect(piece).to be_a(Pawn)
+      expect(piece.moved?).to be false
     end
 
     it 'returns a white king' do
       piece = chessboard.get_piece([7,4])
       expect(piece.white?).to be true
       expect(piece).to be_a(King)
+      expect(piece.moved?).to be false
     end
 
     it 'returns nil' do
@@ -53,6 +55,11 @@ describe ChessBoard do
       it 'piece is still black' do
         board = chessboard.instance_variable_get(:@board)
         expect(board[2][0].black?).to be true
+      end
+
+      it 'piece move flag is set' do
+        board = chessboard.instance_variable_get(:@board)
+        expect(board[2][0].moved?).to be true
       end
     end
   end

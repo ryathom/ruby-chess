@@ -3,6 +3,7 @@
 class ChessPiece
   def initialize(color)
     @color = color
+    @moved = false
   end
 
   def white?
@@ -19,6 +20,14 @@ class ChessPiece
 
   def piece?
     true
+  end
+
+  def set_moved
+    @moved = true
+  end
+
+  def moved?
+    @moved
   end
 
   def symbol
