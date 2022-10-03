@@ -55,11 +55,15 @@ class ChessBoard
     row
   end
 
-  def move_piece(piece, x, y)
+  def move_piece(piece, location)
+    x = location[0]
+    y = location[1]
     @board[x][y] = remove_piece(piece)
   end
 
-  def get_piece(x, y)
+  def get_piece(location)
+    x = location[0]
+    y = location[1]
     @board[x][y]
   end
 
