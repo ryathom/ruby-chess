@@ -71,7 +71,7 @@ class ChessBoard
 
   def find_pieces(type, color)
     @board.flatten.select do |piece|
-      piece && (piece.class.name == type) && (piece.color == color)
+      piece && (piece.instance_of?(::type)) && (piece.color == color)
     end
   end
 
@@ -105,4 +105,3 @@ class ChessBoard
     remove_piece(piece)
   end
 end
-

@@ -9,12 +9,12 @@ describe Player do
       expect(player.verify_input(notation)).to eql(notation)
     end
 
-    it 'accepts valud notation - bishop capture' do
+    it 'accepts valid notation - bishop capture' do
       notation = 'Bxd5'
       expect(player.verify_input(notation)).to eql(notation)
     end
 
-    it 'accepts valud notation - castling' do
+    it 'accepts valid notation - castling' do
       notation = '0-0-0'
       expect(player.verify_input(notation)).to eql(notation)
     end

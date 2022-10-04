@@ -3,7 +3,7 @@ class Player
     @color = color
   end
 
-  NOTATION = /([Oo0](-[Oo0]){1,2}|[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](\=[QRBN])?[+#]?(\s(1-0|0-1|1\/2-1\/2))?)/
+  NOTATION = /([Oo0](-[Oo0]){1,2}|[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](=[QRBN])?[+#]?)/
 
   def white?
     return true if @color == 'white'
@@ -22,6 +22,8 @@ class Player
       input = gets.chomp
       input = verify_input(input)
       return input unless input.nil?
+
+      puts 'Input Error: Enter valid chess notation. #TODO: Man page/help'
     end
   end
 
