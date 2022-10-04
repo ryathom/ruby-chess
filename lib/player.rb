@@ -4,6 +4,8 @@ class Player
   end
 
   NOTATION = /([Oo0](-[Oo0]){1,2}|[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](=[QRBN])?[+#]?)/
+  CASTLING = /([Oo0](-[Oo0]){1,2})/
+  SPLIT_MOVETEXT = /([KQRBN]?)([a-h]?)([1-8]?)(x?)([a-h][1-8])/
 
   def white?
     return true if @color == 'white'
@@ -32,4 +34,16 @@ class Player
 
     nil
   end
+
+  # seperates piece from target address
+  def split_movetext(input)
+    return input.scan(SPLIT_MOVETEXT)[0].reject {|e| e.empty?}
+  end
 end
+
+
+# # Test
+# player = Player.new('white')
+# obj = player.split_movetext('Nc6')
+# p obj
+
