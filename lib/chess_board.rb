@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require_relative 'chess_piece'
 
 class ChessBoard
@@ -7,7 +8,7 @@ class ChessBoard
     initial_setup
   end
 
-  FILEREF = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'].freeze
+  FILEREF = %w[a b c d e f g h].freeze
 
   def visualize_board
     puts nil
@@ -16,11 +17,11 @@ class ChessBoard
       n = 8 - idx
       string = " #{n} | "
       row.each do |space|
-        if space.nil?
-          string += '_'
-        else
-          string += space.symbol
-        end
+        string += if space.nil?
+                    '_'
+                  else
+                    space.symbol
+                  end
         string += ' | '
       end
       puts string
@@ -59,8 +60,8 @@ class ChessBoard
 
   def lookup(address)
     address = address.split('')
-    file = address[0] #letter
-    rank = address[1] #number
+    file = address[0] # letter
+    rank = address[1] # number
 
     file = FILEREF.index(file)
     rank = 8 - rank.to_i
@@ -68,17 +69,23 @@ class ChessBoard
     [rank, file]
   end
 
-  def move_piece(piece, location)
-    x = location[0]
-    y = location[1]
-    piece.set_moved
-    @board[x][y] = remove_piece(piece)
+  def find_pieces(type, color)
+    @board.flatten.select do |piece|
+      piece && (piece.class.name == type) && (piece.color == color)
+    end
   end
 
   def get_piece(location)
     x = location[0]
     y = location[1]
     @board[x][y]
+  end
+
+  def move_piece(piece, location)
+    x = location[0]
+    y = location[1]
+    piece.set_moved
+    @board[x][y] = remove_piece(piece)
   end
 
   def remove_piece(piece)
@@ -98,3 +105,4 @@ class ChessBoard
     remove_piece(piece)
   end
 end
+

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ChessPiece
+  attr_reader :color
+
   def initialize(color)
     @color = color
     @moved = false
