@@ -90,6 +90,11 @@ class ChessGame
   end
 
   def request_move(piece, disambig, target_addr, promo)
+    unless @board.get_piece_at_address(target_addr).nil?
+      puts "Error - space is not empty. Capture commands must include 'x'"
+      return false
+    end
+
     piece_name = piece_name(piece)
 
     piece_list = @board.find_pieces(piece_name, @current_player.color)
