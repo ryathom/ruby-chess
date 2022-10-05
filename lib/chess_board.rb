@@ -83,10 +83,15 @@ class ChessBoard
     end
   end
 
-  def get_piece(location)
+  def get_piece_at_location(location)
     x = location[0]
     y = location[1]
     @board[x][y]
+  end
+
+  def get_piece_at_address(address)
+    location = lookup(address)
+    get_piece_at_location(location)
   end
 
   def get_location_of_piece(piece)
@@ -100,16 +105,16 @@ class ChessBoard
     nil
   end
 
-  def move_piece(piece, location)
+  def move_piece_to_location(piece, location)
     x = location[0]
     y = location[1]
     piece.set_moved
     @board[x][y] = remove_piece(piece)
   end
 
-  def move_piece_to_addr(piece, addr)
+  def move_piece_to_address(piece, addr)
     location = lookup(addr)
-    move_piece(piece, location)
+    move_piece_to_location(piece, location)
   end
 
   def remove_piece(piece)
@@ -124,8 +129,13 @@ class ChessBoard
     nil
   end
 
-  def remove_piece_at(location)
-    piece = get_piece(location)
+  def remove_piece_at_location(location)
+    piece = get_piece_at_location(location)
+    remove_piece(piece)
+  end
+
+  def remove_piece_at_address(address)
+    piece = get_piece_at_address(address)
     remove_piece(piece)
   end
 end

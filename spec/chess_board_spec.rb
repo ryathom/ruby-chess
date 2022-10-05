@@ -6,48 +6,48 @@ describe ChessBoard do
 
   describe '#get_piece' do
     it 'returns a black pawn' do
-      piece = chessboard.get_piece([1, 0])
+      piece = chessboard.get_piece_at_location([1, 0])
       expect(piece.black?).to be true
       expect(piece).to be_a(Pawn)
       expect(piece.moved?).to be false
     end
 
     it 'returns a white king' do
-      piece = chessboard.get_piece([7, 4])
+      piece = chessboard.get_piece_at_location([7, 4])
       expect(piece.white?).to be true
       expect(piece).to be_a(King)
       expect(piece.moved?).to be false
     end
 
     it 'returns nil' do
-      piece = chessboard.get_piece([3, 3])
+      piece = chessboard.get_piece_at_location([3, 3])
       expect(piece).to be nil
     end
   end
 
   describe '#remove_piece' do
     it 'removes the piece' do
-      piece = chessboard.get_piece([1, 0])
+      piece = chessboard.get_piece_at_location([1, 0])
       chessboard.remove_piece(piece)
 
-      expect(chessboard.get_piece([1, 0])).to be nil
+      expect(chessboard.get_piece_at_location([1, 0])).to be nil
     end
   end
 
   describe '#move_piece' do
     context 'when a black pawn is moved' do
       before do
-        pawn = chessboard.get_piece([1, 0])
-        chessboard.move_piece(pawn, [2, 0])
+        pawn = chessboard.get_piece_at_location([1, 0])
+        chessboard.move_piece_to_location(pawn, [2, 0])
       end
 
       it 'piece is now in new space' do
-        new_space = chessboard.get_piece([2, 0])
+        new_space = chessboard.get_piece_at_location([2, 0])
         expect(new_space).to be_a(Pawn)
       end
 
       it 'previous space is empty' do
-        new_space = chessboard.get_piece([1, 0])
+        new_space = chessboard.get_piece_at_location([1, 0])
         expect(new_space.nil?).to be true
       end
 
@@ -77,9 +77,9 @@ describe ChessBoard do
     it 'output works with remove_piece method' do
       address = 'a7'
       location = chessboard.lookup(address)
-      chessboard.remove_piece_at(location)
+      chessboard.remove_piece_at_location(location)
 
-      expect(chessboard.get_piece([1, 0])).to be nil
+      expect(chessboard.get_piece_at_location([1, 0])).to be nil
     end
   end
 

@@ -101,7 +101,7 @@ class ChessGame
       return false
     end
 
-    @board.move_piece_to_addr(piece, target_addr)
+    @board.move_piece_to_address(piece, target_addr)
   end
 
   def disambiguate(list, disambig)

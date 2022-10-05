@@ -57,7 +57,7 @@ class Pawn < ChessPiece
     own_location = board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
 
-    return false unless board.get_piece(target_location).nil? # empty square
+    return false unless board.get_piece_at_location(target_location).nil? # empty square
 
     if moved?
       check_valid_single_move(diff)
