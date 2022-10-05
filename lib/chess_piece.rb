@@ -159,6 +159,15 @@ class Rook < ChessPiece
     symbol = "\u265C" if black?
     symbol.encode('utf-8')
   end
+
+  ROOK_VECTORS = [[1, 0], [0, 1], [-1, 0], [0, -1]].freeze
+
+  def check_valid_move(board, target_addr)
+    target_location = board.lookup(target_addr)
+    own_location = board.get_location_of_piece(self)
+
+    check_vectors(board, own_location, target_location, ROOK_VECTORS)
+  end
 end
 
 # ----------------------------------------
@@ -169,6 +178,16 @@ class Queen < ChessPiece
     symbol = "\u2655" if white?
     symbol = "\u265B" if black?
     symbol.encode('utf-8')
+  end
+
+  QUEEN_VECTORS = [[1, 0], [0, 1], [-1, 0], [0, -1],
+                   [1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
+
+  def check_valid_move(board, target_addr)
+    target_location = board.lookup(target_addr)
+    own_location = board.get_location_of_piece(self)
+
+    check_vectors(board, own_location, target_location, QUEEN_VECTORS)
   end
 end
 
