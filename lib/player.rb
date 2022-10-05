@@ -1,8 +1,9 @@
 class Player
-  attr_reader :color
+  attr_reader :color, :name
 
   def initialize(color)
     @color = color
+    @name = color.capitalize
   end
 
   NOTATION = /([Oo0](-[Oo0]){1,2}|[KQRBN]?[a-h]?[1-8]?x?[a-h][1-8](=[QRBN])?[+#]?)/

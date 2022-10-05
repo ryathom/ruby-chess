@@ -26,16 +26,24 @@ class ChessGame
     visualize_board
     
     loop do
-      puts "#{@current_player.color}, enter your move:"
+      puts "#{@current_player.name}, enter your move:"
       turn_complete = false
       until turn_complete
         turn_complete = interpret_command(@current_player.input)
       end
 
       visualize_board
+      next_player
     end
   end
-    
+
+  def next_player
+    if @current_player == @players[0]
+      @current_player = @players[1]
+    else
+      @current_player = @players[0]
+    end
+  end
 
   # ----------------------------------------
   # ---  Command interpretation methods  ---
