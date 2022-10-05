@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# ----------------------------------------
+# ------------  Base class    ------------
+# ----------------------------------------
 class ChessPiece
   attr_reader :color
 
@@ -45,6 +48,9 @@ class ChessPiece
   end
 end
 
+# ----------------------------------------
+# ------------  Pawn   ------------
+# ----------------------------------------
 class Pawn < ChessPiece
   def symbol
     symbol = "\u2659" if white?
@@ -79,6 +85,9 @@ class Pawn < ChessPiece
   end
 end
 
+# ----------------------------------------
+# ------------  Knight   ------------
+# ----------------------------------------
 class Knight < ChessPiece
   def symbol
     symbol = "\u2658" if white?
@@ -87,6 +96,9 @@ class Knight < ChessPiece
   end
 end
 
+# ----------------------------------------
+# ------------  Bishop   ------------
+# ----------------------------------------
 class Bishop < ChessPiece
   def symbol
     symbol = "\u2657" if white?
@@ -95,6 +107,9 @@ class Bishop < ChessPiece
   end
 end
 
+# ----------------------------------------
+# ------------  Rook   ------------
+# ----------------------------------------
 class Rook < ChessPiece
   def symbol
     symbol = "\u2656" if white?
@@ -103,6 +118,9 @@ class Rook < ChessPiece
   end
 end
 
+# ----------------------------------------
+# ------------  Queen   ------------
+# ----------------------------------------
 class Queen < ChessPiece
   def symbol
     symbol = "\u2655" if white?
@@ -111,6 +129,9 @@ class Queen < ChessPiece
   end
 end
 
+# ----------------------------------------
+# ------------  King   ------------
+# ----------------------------------------
 class King < ChessPiece
   def symbol
     symbol = "\u2654" if white?
