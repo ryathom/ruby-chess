@@ -6,9 +6,8 @@ require_relative 'player'
 CASTLING = /(([Oo0](-[Oo0]){1,2}))/
 QUEENSIDE = /(([Oo0](-[Oo0]){2}))/
 
-
-
-
+NON_PAWN = /[KQRBN][a-h]?[1-8]?x?[a-h][1-8]/
+PAWN = /[a-h]?[1-8]?x?[a-h][1-8]([QRBN]?)/
 
 class ChessGame
   def initialize
@@ -49,6 +48,12 @@ class ChessGame
     return true if input.match('x')
 
     false
+  end
+
+  def pawn?(input)
+    return false if input.match(NON_PAWN)
+
+    true
   end
 
   # ----------------------------------------

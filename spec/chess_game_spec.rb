@@ -43,4 +43,26 @@ describe ChessGame do
       expect(game.capture?(move)).to be false
     end
   end
+
+  describe '#pawn?' do
+    it 'accepts a pawn move' do
+      move = 'a6'
+      expect(game.pawn?(move)).to be true
+    end
+
+    it 'accepts a pawn capture' do
+      move = 'xe4'
+      expect(game.pawn?(move)).to be true
+    end
+
+    it 'accepts a promotion' do
+      move = 'e8Q'
+      expect(game.pawn?(move)).to be true
+    end
+
+    it 'rejects a knight move' do
+      move = 'Ke6'
+      expect(game.pawn?(move)).to be false
+    end
+  end
 end
