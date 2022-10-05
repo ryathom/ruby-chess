@@ -94,6 +94,21 @@ class Knight < ChessPiece
     symbol = "\u265E" if black?
     symbol.encode('utf-8')
   end
+
+  KNIGHTS_TRAVAILS = [[1, 2], [-1, 2], [1, -2], [-1, -2],
+                      [2, 1], [-2, 1], [2, -1], [-2, -1]].freeze
+
+  def check_valid_move(board, target_addr)
+    target_location = board.lookup(target_addr)
+    own_location = board.get_location_of_piece(self)
+    diff = diff_locations(own_location, target_location)
+
+    return false unless board.get_piece_at_location(target_location).nil? # empty square
+
+    return true if KNIGHTS_TRAVAILS.include?(diff)
+
+    false
+  end
 end
 
 # ----------------------------------------
