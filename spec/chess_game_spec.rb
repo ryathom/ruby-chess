@@ -19,4 +19,16 @@ describe ChessGame do
       expect(game.castling?(move)).to be false
     end
   end
+
+  describe '#queenside?' do
+    it 'accepts queenside castling' do
+      move = '0-0-0'
+      expect(game.queenside?(move)).to be true
+    end
+
+    it 'rejects kingside castling' do
+      move = '0-0'
+      expect(game.queenside?(move)).to be false
+    end
+  end
 end
