@@ -8,8 +8,6 @@ class ChessBoard
     initial_setup
   end
 
-  FILEREF = %w[a b c d e f g h].freeze
-
   def visualize_board
     puts nil
 
@@ -30,6 +28,10 @@ class ChessBoard
     puts '     a   b   c   d   e   f   g   h'
     puts nil
   end
+
+  # ----------------------------------------
+  # -----------  Set up methods  -----------
+  # ----------------------------------------
 
   def initial_setup
     @board[0] = setup_non_pawns('black')
@@ -58,6 +60,12 @@ class ChessBoard
     row
   end
 
+  # ----------------------------------------
+  # ------- Find and move methods ----------
+  # ----------------------------------------
+
+  FILEREF = %w[a b c d e f g h].freeze
+  
   def lookup(address)
     address = address.split('')
     file = address[0] # letter
