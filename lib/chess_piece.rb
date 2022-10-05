@@ -200,4 +200,17 @@ class King < ChessPiece
     symbol = "\u265A" if black?
     symbol.encode('utf-8')
   end
+
+  KING_VECTORS = [[1, 0], [0, 1], [-1, 0], [0, -1],
+                  [1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
+
+  def check_valid_move(board, target_addr)
+    target_location = board.lookup(target_addr)
+    own_location = board.get_location_of_piece(self)
+    diff = diff_locations(own_location, target_location)
+
+    return true if KING_VECTORS.include?(diff)
+
+    false
+  end
 end
