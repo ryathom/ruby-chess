@@ -65,7 +65,7 @@ class ChessBoard
   # ----------------------------------------
 
   FILEREF = %w[a b c d e f g h].freeze
-  
+
   def lookup(address)
     address = address.split('')
     file = address[0] # letter
@@ -87,6 +87,17 @@ class ChessBoard
     x = location[0]
     y = location[1]
     @board[x][y]
+  end
+
+  def get_location_of_piece(piece)
+    @board.each_with_index do |row, i|
+      row.each_with_index do |space, j|
+        if space == piece
+          return [i, j]
+        end
+      end
+    end
+    nil
   end
 
   def move_piece(piece, location)
@@ -113,3 +124,16 @@ class ChessBoard
     remove_piece(piece)
   end
 end
+
+test = ChessBoard.new()
+test.visualize_board
+
+location = test.lookup('a2')
+pawn = test.get_piece(location)
+p pawn.check_valid_move(test, 'a4')
+p pawn.check_valid_move(test, 'b3')
+
+location = test.lookup('h7')
+pawn = test.get_piece(location)
+p pawn.check_valid_move(test, 'h5')
+p pawn.check_valid_move(test, 'h8')
