@@ -11,6 +11,8 @@ NON_PAWN = /[KQRBN][a-h]?[1-8]?x?[a-h][1-8]/
 PAWN = /[a-h]?[1-8]?x?[a-h][1-8]([QRBN]?)/
 PAWN_PROMO = /[a-h]?[1-8]?x?[a-h][1-8][QRBN]/
 
+SPLIT_COMMAND = /([KQRBN]?)([a-h]?[1-8]?)(x?)([a-h][1-8])([QRBN]?)/
+
 
 class ChessGame
   def initialize
@@ -32,18 +34,15 @@ class ChessGame
       else
         kingside_castle_request
       end
-    end
+    else
+      command = split_command(input)
+      piece = command[0]
+      disambig = command[1]
+      capture = command[2]
+      target_addr = command[3]
+      promo = command[4]
 
-    if pawn?(input)
-      if capture?(input)
-        pawn_capture_request(input)
-      else
-        pawn_move_request(input)
-      end
-
-      if pawn_promo?(input)
-        pawn_promo_request(input)
-      end
+      request_command(piece, disambig, capture, target_addr, promo)
     end
   end
 
@@ -59,26 +58,8 @@ class ChessGame
     false
   end
 
-  def capture?(input)
-    return true if input.match('x')
-
-    false
-  end
-
-  def pawn?(input)
-    return false if input.match(NON_PAWN)
-
-    true
-  end
-  
-  def pawn_promo?(input)
-    return true if input.match(PAWN_PROMO)
-
-    false
-  end
-
   def split_command(input)
-    obj = input.scan(SPLIT_COMMAND)[0].reject {|e| e.nil? | e.empty?}
+    obj = input.scan(SPLIT_COMMAND)[0]
     p obj
   end
 
@@ -106,3 +87,12 @@ class ChessGame
     puts "TODO"
   end
 end
+
+# game = ChessGame.new
+
+# game.split_command('e6')
+# game.split_command('Ke6')
+# game.split_command('Kxe6')
+# game.split_command('K4xe6')
+# game.split_command('Kdxe6')
+# game.split_command('Kd4xe6')
