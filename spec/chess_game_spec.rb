@@ -31,4 +31,16 @@ describe ChessGame do
       expect(game.queenside?(move)).to be false
     end
   end
+
+  describe '#capture?' do
+    it 'accepts a capturing move' do
+      move = 'Kxe6'
+      expect(game.capture?(move)).to be true
+    end
+
+    it 'rejects other moves' do
+      move = 'Ke6'
+      expect(game.capture?(move)).to be false
+    end
+  end
 end

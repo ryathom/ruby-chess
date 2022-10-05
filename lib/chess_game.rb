@@ -8,6 +8,8 @@ QUEENSIDE = /(([Oo0](-[Oo0]){2}))/
 
 
 
+
+
 class ChessGame
   def initialize
     @board = ChessBoard.new
@@ -39,6 +41,12 @@ class ChessGame
 
   def queenside?(input)
     return true if input.match(QUEENSIDE)
+
+    false
+  end
+
+  def capture?(input)
+    return true if input.match('x')
 
     false
   end
