@@ -65,4 +65,16 @@ describe ChessGame do
       expect(game.pawn?(move)).to be false
     end
   end
+
+  describe '#pawn_promo?' do
+    it 'accepts a pawn promo move' do
+      move = 'a6Q'
+      expect(game.pawn_promo?(move)).to be true
+    end
+
+    it 'rejects a pawn move' do
+      move = 'a6'
+      expect(game.pawn_promo?(move)).to be false
+    end
+  end
 end
