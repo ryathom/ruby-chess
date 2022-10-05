@@ -107,6 +107,11 @@ class ChessBoard
     @board[x][y] = remove_piece(piece)
   end
 
+  def move_piece_to_addr(piece, addr)
+    location = lookup(addr)
+    move_piece(piece, location)
+  end
+
   def remove_piece(piece)
     @board.each_with_index do |row, i|
       row.each_with_index do |space, j|
@@ -124,16 +129,3 @@ class ChessBoard
     remove_piece(piece)
   end
 end
-
-test = ChessBoard.new()
-test.visualize_board
-
-location = test.lookup('a2')
-pawn = test.get_piece(location)
-p pawn.check_valid_move(test, 'a4')
-p pawn.check_valid_move(test, 'b3')
-
-location = test.lookup('h7')
-pawn = test.get_piece(location)
-p pawn.check_valid_move(test, 'h5')
-p pawn.check_valid_move(test, 'h8')

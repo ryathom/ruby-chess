@@ -56,7 +56,6 @@ class Pawn < ChessPiece
     target_location = board.lookup(target_addr)
     own_location = board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
-    puts "DEBUG: diff = #{diff}"
 
     return false unless board.get_piece(target_location).nil? # empty square
 
