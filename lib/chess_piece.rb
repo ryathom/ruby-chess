@@ -46,6 +46,29 @@ class ChessPiece
     diff << own_location[1] - target_location[1]
     diff
   end
+
+  def within_bounds(pointer)
+    pointer[0].between?(0,7) && pointer[1].between?(0,7)
+  end
+
+  def check_vectors(board, own_location, target_location, vectors)
+    vectors.each do |v|
+      pointer = own_location.dup
+      pointer[0] += v[0]
+      pointer[1] += v[1]
+      while within_bounds(pointer)
+        found = board.get_piece_at_location(pointer)
+
+        return true if pointer == target_location
+        break unless found.nil?
+
+        pointer[0] += v[0]
+        pointer[1] += v[1]
+      end
+    end
+
+    false
+  end
 end
 
 # ----------------------------------------
@@ -115,6 +138,15 @@ class Bishop < ChessPiece
     symbol = "\u2657" if white?
     symbol = "\u265D" if black?
     symbol.encode('utf-8')
+  end
+
+  BISHOP_VECTORS = [[1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
+
+  def check_valid_move(board, target_addr)
+    target_location = board.lookup(target_addr)
+    own_location = board.get_location_of_piece(self)
+
+    check_vectors(board, own_location, target_location, BISHOP_VECTORS)
   end
 end
 

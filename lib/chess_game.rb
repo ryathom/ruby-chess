@@ -25,13 +25,15 @@ class ChessGame
   def main
     visualize_board
     
-    puts "#{@current_player.color}, enter your move:"
-    turn_complete = false
-    until turn_complete
-      turn_complete = interpret_command(@current_player.input)
-    end
+    loop do
+      puts "#{@current_player.color}, enter your move:"
+      turn_complete = false
+      until turn_complete
+        turn_complete = interpret_command(@current_player.input)
+      end
 
-    visualize_board
+      visualize_board
+    end
   end
     
 
