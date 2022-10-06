@@ -96,7 +96,20 @@ class ChessGame
   end
 
   def request_capture(piece, disambig, target_addr, promo)
-    puts "TODO"
+    return false unless check_for_enemy_piece(target_addr)
+
+    piece_name = piece_name(piece)
+
+    piece_list = @board.find_pieces(piece_name, @current_player.color)
+    piece_list.select! {|p| p.check_valid_capture(@board, target_addr)}
+    piece = disambiguate(piece_list, disambig)
+
+    if piece.nil?
+      puts "Error - no valid piece found to make this capture"
+      return false
+    end
+
+    @board.move_piece_to_address(piece, target_addr)
   end
 
   def request_move(piece, disambig, target_addr, promo)
@@ -112,7 +125,7 @@ class ChessGame
     piece = disambiguate(piece_list, disambig)
 
     if piece.nil?
-      puts "Error - no valid piece found"
+      puts "Error - no valid piece found to make this move"
       return false
     end
 
@@ -122,6 +135,22 @@ class ChessGame
   def disambiguate(list, disambig)
     puts "TODO - disambiguate method"
     list[0]
+  end
+
+  def check_for_enemy_piece(target_addr)
+    target = @board.get_piece_at_address(target_addr)
+
+    if target.nil?
+      puts "Error - no piece found to capture"
+      return false
+    end
+
+    if target.color == @current_player.color
+      puts "Error - you can't capture friendly pieces"
+      return false
+    end
+
+    true
   end
 
   def piece_name(piece)

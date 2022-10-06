@@ -93,6 +93,14 @@ class Pawn < ChessPiece
     end
   end
 
+  def check_valid_capture(board, target_addr)
+    target_location = board.lookup(target_addr)
+    own_location = board.get_location_of_piece(self)
+    diff = diff_locations(own_location, target_location)
+
+    check_valid_diagonal(diff)
+  end
+
   def check_valid_single_move(diff)
     return diff == [1, 0] if white?
     return diff == [-1, 0] if black?
@@ -103,6 +111,11 @@ class Pawn < ChessPiece
 
     return diff[0].between?(1, 2) if white?
     return diff[0].between?(-2, -1) if black?
+  end
+
+  def check_valid_diagonal(diff)
+    return [[1, -1], [1, 1]].include?(diff) if white?
+    return [[-1, -1], [-1, 1]].include?(diff) if black?
   end
 end
 
