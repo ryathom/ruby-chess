@@ -69,6 +69,11 @@ class ChessPiece
 
     false
   end
+
+  # Non-pawn pieces all use the same logic for movement and capture
+  def check_valid_capture(board, target_addr)
+    check_valid_move(board, target_addr)
+  end
 end
 
 # ----------------------------------------
