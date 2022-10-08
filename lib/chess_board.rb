@@ -35,9 +35,9 @@ class ChessBoard
 
   def initial_setup
     @board[0] = setup_non_pawns('black')
-    @board[1] = setup_pawns('black')
+    # @board[1] = setup_pawns('black')
 
-    @board[6] = setup_pawns('white')
+    # @board[6] = setup_pawns('white')
     @board[7] = setup_non_pawns('white')
   end
 
@@ -75,6 +75,16 @@ class ChessBoard
     rank = 8 - rank.to_i
 
     [rank, file]
+  end
+
+  def encode(location)
+    file = location[1]
+    rank = location[0]
+
+    file = FILEREF[file]
+    rank = 8 - rank
+
+    addr = file.to_s + rank.to_s
   end
 
   def find_pieces(type, color)

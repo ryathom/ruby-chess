@@ -226,6 +226,7 @@ class ChessGame
   def king_can_castle
     king = @board.find_pieces('King', @current_player.color)
     king.select! { |k| !k.moved?}
+    king.select! { |k| !k.check?(@board)}
 
     return king[0]
   end

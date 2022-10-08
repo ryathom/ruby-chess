@@ -83,6 +83,13 @@ describe ChessBoard do
     end
   end
 
+  describe '#encode' do
+    it 'translates 7,0 to a1' do
+      location = [7,0]
+      expect(chessboard.encode(location)).to eql('a1')
+    end
+  end
+
   describe '#find_pieces' do
     it 'returns a list of all white pawns' do
       list = chessboard.find_pieces('Pawn', 'white')

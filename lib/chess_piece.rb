@@ -9,6 +9,7 @@ class ChessPiece
   def initialize(color)
     @color = color
     @moved = false
+    @enemy = enemy
   end
 
   def white?
@@ -25,6 +26,11 @@ class ChessPiece
 
   def piece?
     true
+  end
+
+  def enemy
+    return 'black' if white?
+    return 'white' if black?
   end
 
   def set_moved
@@ -230,5 +236,12 @@ class King < ChessPiece
     return true if KING_VECTORS.include?(diff)
 
     false
+  end
+
+  def check?(board)
+    own_location = board.get_location_of_piece(self)
+    own_addr = board.encode(own_location)
+
+    board.square_is_under_attack(own_addr, @enemy)
   end
 end
