@@ -171,11 +171,73 @@ class ChessGame
   end
 
   def queenside_castle_request
-    puts "TODO"
+    king = king_can_castle
+    rook = rook_can_castle(0)
+
+    if (rook.nil? || king.nil?)
+      puts "Queenside castle not possible"
+      return false
+    end
+
+    if @current_player.white?
+      spaces = ['c1', 'd1']
+    else
+      spaces = ['c8', 'd8']
+    end
+    
+    spaces.each { |s| return false if @board.square_is_under_attack(s, @current_player.enemy) }
+
+    if @current_player.white?
+      spaces << 'b1'
+    else
+      spaces << 'b8'
+    end
+
+    spaces.each do |s|
+      return false unless @board.get_piece_at_address(s).nil?
+    end
+
+    @board.queenside_castle(king, rook)
   end
 
   def kingside_castle_request
-    puts "TODO"
+    king = king_can_castle
+    rook = rook_can_castle(7)
+
+    if (rook.nil? || king.nil?)
+      puts "Kingside castle not possible"
+      return false
+    end
+
+    if @current_player.white?
+      spaces = ['f1', 'g1']
+    else
+      spaces = ['f8', 'g8']
+    end
+
+    spaces.each do |s|
+      return false unless @board.get_piece_at_address(s).nil?
+      return false if @board.square_is_under_attack(s, @current_player.enemy)
+    end
+
+    @board.kingside_castle(king, rook)
   end
+
+  def king_can_castle
+    king = @board.find_pieces('King', @current_player.color)
+    king.select! { |k| !k.moved?}
+
+    return king[0]
+  end
+
+  def rook_can_castle(file)
+    rook = @board.find_pieces('Rook', @current_player.color)
+
+    rook.select! { |r| @board.get_location_of_piece(r)[1] == file}
+    rook.select! { |r| !r.moved? }
+
+    return rook[0]
+  end
+
 end
 

@@ -83,6 +83,12 @@ class ChessBoard
     end
   end
 
+  def find_all_pieces(color)
+    @board.flatten.select do |piece|
+      piece && (piece.color == color)
+    end
+  end
+
   def get_piece_at_location(location)
     x = location[0]
     y = location[1]
@@ -138,4 +144,40 @@ class ChessBoard
     piece = get_piece_at_address(address)
     remove_piece(piece)
   end
+
+  # ----------------------------------------
+  # ------- Castling and check ----------
+  # ----------------------------------------
+
+  # returns list of pieces of given color attacking given square
+  def square_attackers(addr, color)
+    piece_list = find_all_pieces(color)
+
+    piece_list.select! {|p| p.check_valid_capture(self, addr)}
+  end
+
+  def square_is_under_attack(addr, color)
+    return true unless square_attackers(addr, color).empty?
+  end
+
+  def queenside_castle(king, rook)
+    king_location = get_location_of_piece(king)
+    king_location[1] -= 2
+    move_piece_to_location(king, king_location)
+
+    rook_location = get_location_of_piece(rook)
+    rook_location[1] += 3
+    move_piece_to_location(rook, rook_location)
+  end
+
+  def kingside_castle(king, rook)
+    king_location = get_location_of_piece(king)
+    king_location[1] += 2
+    move_piece_to_location(king, king_location)
+
+    rook_location = get_location_of_piece(rook)
+    rook_location[1] -= 2
+    move_piece_to_location(rook, rook_location)
+  end
+    
 end

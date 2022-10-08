@@ -20,6 +20,11 @@ class Player
     false
   end
 
+  def enemy
+    return 'white' if black?
+    return 'black' if white?
+  end
+
   def input
     loop do
       input = gets.chomp
