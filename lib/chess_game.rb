@@ -26,6 +26,7 @@ class ChessGame
     visualize_board
     
     loop do
+      announce_check
       puts "#{@current_player.name}, enter your move:"
       turn_complete = false
       until turn_complete
@@ -42,6 +43,13 @@ class ChessGame
       @current_player = @players[1]
     else
       @current_player = @players[0]
+    end
+  end
+
+  def announce_check
+    king = @board.find_pieces('King', @current_player.color)[0]
+    if king.check?
+      puts "#{@current_player.name}, you are in check."
     end
   end
 
