@@ -230,6 +230,8 @@ class King < ChessPiece
                   [1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
 
   def check_valid_move(target_addr)
+    return false if @board.square_is_under_attack(target_addr, @enemy)
+
     target_location = @board.lookup(target_addr)
     own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
