@@ -31,4 +31,17 @@ describe ChessGame do
       expect(game.queenside?(move)).to be false
     end
   end
+
+  describe '#split_disambig' do
+    it 'splits d3' do
+      input = 'd3'
+      expect(game.split_disambig(input)).to eql(['d', '3'])
+    end
+
+    it 'splits 3' do
+      input = '3'
+      expect(game.split_disambig(input)).to eql(['', '3'])
+    end
+  end
+
 end

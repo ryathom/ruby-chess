@@ -7,7 +7,7 @@ CASTLING = /(([Oo0](-[Oo0]){1,2}))/
 QUEENSIDE = /(([Oo0](-[Oo0]){2}))/
 
 SPLIT_COMMAND = /([KQRBN]?)([a-h]?[1-8]?)(x?)([a-h][1-8])([QRBN]?)/
-
+SPLIT_DISAMBIG = /([a-h]?)([1-8]?)/
 
 class ChessGame
   def initialize
@@ -91,6 +91,10 @@ class ChessGame
     obj = input.scan(SPLIT_COMMAND)[0]
   end
 
+  def split_disambig(input)
+    obj = input.scan(SPLIT_DISAMBIG)[0]
+  end
+
   # ----------------------------------------
   # --------  Move request methods  --------
   # ----------------------------------------
@@ -110,7 +114,8 @@ class ChessGame
 
     piece_list = @board.find_pieces(piece_name, @current_player.color)
     piece_list.select! {|p| p.check_valid_capture(target_addr)}
-    piece = disambiguate(piece_list, disambig)
+    
+    return false unless piece = disambiguate(piece_list, disambig)
 
     if piece.nil?
       puts "Error - no valid piece found to make this capture"
@@ -130,7 +135,8 @@ class ChessGame
 
     piece_list = @board.find_pieces(piece_name, @current_player.color)
     piece_list.select! {|p| p.check_valid_move(target_addr)}
-    piece = disambiguate(piece_list, disambig)
+    
+    return false unless piece = disambiguate(piece_list, disambig)
 
     if piece.nil?
       puts "Error - no valid piece found to make this move"
@@ -141,8 +147,30 @@ class ChessGame
   end
 
   def disambiguate(list, disambig)
-    puts "TODO - disambiguate method"
-    list[0]
+    return list[0] if list.length == 1
+    
+    disambig = split_disambig(disambig)
+
+    list.select! do |p|
+      location = @board.get_location_of_piece(p)
+      location = @board.encode(location).split('')
+
+      (location[0] == disambig[0]) || (location[1] == disambig[1])
+    end
+
+    return list[0] if list.length == 1
+
+    list.select! do |p|
+      location = @board.get_location_of_piece(p)
+      location = @board.encode(location).split('')
+
+      (location[0] == disambig[0]) && (location[1] == disambig[1])
+    end
+
+    return list[0] if list.length == 1
+
+    puts "Error - multiple valid pieces found, please disambiguate"
+    return false
   end
 
   def check_for_enemy_piece(target_addr)
