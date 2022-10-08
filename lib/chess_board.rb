@@ -35,27 +35,27 @@ class ChessBoard
 
   def initial_setup
     @board[0] = setup_non_pawns('black')
-    # @board[1] = setup_pawns('black')
+    @board[1] = setup_pawns('black')
 
-    # @board[6] = setup_pawns('white')
+    @board[6] = setup_pawns('white')
     @board[7] = setup_non_pawns('white')
   end
 
   def setup_pawns(color)
-    Array.new(8) { Pawn.new(color) }
+    Array.new(8) { Pawn.new(color, self) }
   end
 
   def setup_non_pawns(color)
     row = []
 
-    row << Rook.new(color)
-    row << Knight.new(color)
-    row << Bishop.new(color)
-    row << Queen.new(color)
-    row << King.new(color)
-    row << Bishop.new(color)
-    row << Knight.new(color)
-    row << Rook.new(color)
+    row << Rook.new(color, self)
+    row << Knight.new(color, self)
+    row << Bishop.new(color, self)
+    row << Queen.new(color, self)
+    row << King.new(color, self)
+    row << Bishop.new(color, self)
+    row << Knight.new(color, self)
+    row << Rook.new(color, self)
 
     row
   end
@@ -163,7 +163,7 @@ class ChessBoard
   def square_attackers(addr, color)
     piece_list = find_all_pieces(color)
 
-    piece_list.select! {|p| p.check_valid_capture(self, addr)}
+    piece_list.select! {|p| p.check_valid_capture(addr)}
   end
 
   def square_is_under_attack(addr, color)

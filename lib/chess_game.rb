@@ -101,7 +101,7 @@ class ChessGame
     piece_name = piece_name(piece)
 
     piece_list = @board.find_pieces(piece_name, @current_player.color)
-    piece_list.select! {|p| p.check_valid_capture(@board, target_addr)}
+    piece_list.select! {|p| p.check_valid_capture(target_addr)}
     piece = disambiguate(piece_list, disambig)
 
     if piece.nil?
@@ -121,7 +121,7 @@ class ChessGame
     piece_name = piece_name(piece)
 
     piece_list = @board.find_pieces(piece_name, @current_player.color)
-    piece_list.select! {|p| p.check_valid_move(@board, target_addr)}
+    piece_list.select! {|p| p.check_valid_move(target_addr)}
     piece = disambiguate(piece_list, disambig)
 
     if piece.nil?
@@ -226,7 +226,7 @@ class ChessGame
   def king_can_castle
     king = @board.find_pieces('King', @current_player.color)
     king.select! { |k| !k.moved?}
-    king.select! { |k| !k.check?(@board)}
+    king.select! { |k| !k.check?}
 
     return king[0]
   end

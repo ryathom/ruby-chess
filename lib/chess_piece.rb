@@ -6,8 +6,9 @@
 class ChessPiece
   attr_reader :color
 
-  def initialize(color)
+  def initialize(color, board)
     @color = color
+    @board = board
     @moved = false
     @enemy = enemy
   end
@@ -57,13 +58,13 @@ class ChessPiece
     pointer[0].between?(0,7) && pointer[1].between?(0,7)
   end
 
-  def check_vectors(board, own_location, target_location, vectors)
+  def check_vectors(own_location, target_location, vectors)
     vectors.each do |v|
       pointer = own_location.dup
       pointer[0] += v[0]
       pointer[1] += v[1]
       while within_bounds(pointer)
-        found = board.get_piece_at_location(pointer)
+        found = @board.get_piece_at_location(pointer)
 
         return true if pointer == target_location
         break unless found.nil?
@@ -77,8 +78,8 @@ class ChessPiece
   end
 
   # Non-pawn pieces all use the same logic for movement and capture
-  def check_valid_capture(board, target_addr)
-    check_valid_move(board, target_addr)
+  def check_valid_capture(target_addr)
+    check_valid_move(target_addr)
   end
 end
 
@@ -92,9 +93,9 @@ class Pawn < ChessPiece
     symbol.encode('utf-8')
   end
 
-  def check_valid_move(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_move(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
 
     if moved?
@@ -104,9 +105,9 @@ class Pawn < ChessPiece
     end
   end
 
-  def check_valid_capture(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_capture(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
 
     check_valid_diagonal(diff)
@@ -143,9 +144,9 @@ class Knight < ChessPiece
   KNIGHTS_TRAVAILS = [[1, 2], [-1, 2], [1, -2], [-1, -2],
                       [2, 1], [-2, 1], [2, -1], [-2, -1]].freeze
 
-  def check_valid_move(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_move(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
 
     return true if KNIGHTS_TRAVAILS.include?(diff)
@@ -166,11 +167,11 @@ class Bishop < ChessPiece
 
   BISHOP_VECTORS = [[1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
 
-  def check_valid_move(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_move(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
 
-    check_vectors(board, own_location, target_location, BISHOP_VECTORS)
+    check_vectors(own_location, target_location, BISHOP_VECTORS)
   end
 end
 
@@ -186,11 +187,11 @@ class Rook < ChessPiece
 
   ROOK_VECTORS = [[1, 0], [0, 1], [-1, 0], [0, -1]].freeze
 
-  def check_valid_move(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_move(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
 
-    check_vectors(board, own_location, target_location, ROOK_VECTORS)
+    check_vectors(own_location, target_location, ROOK_VECTORS)
   end
 end
 
@@ -207,11 +208,11 @@ class Queen < ChessPiece
   QUEEN_VECTORS = [[1, 0], [0, 1], [-1, 0], [0, -1],
                    [1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
 
-  def check_valid_move(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_move(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
 
-    check_vectors(board, own_location, target_location, QUEEN_VECTORS)
+    check_vectors(own_location, target_location, QUEEN_VECTORS)
   end
 end
 
@@ -228,9 +229,9 @@ class King < ChessPiece
   KING_VECTORS = [[1, 0], [0, 1], [-1, 0], [0, -1],
                   [1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
 
-  def check_valid_move(board, target_addr)
-    target_location = board.lookup(target_addr)
-    own_location = board.get_location_of_piece(self)
+  def check_valid_move(target_addr)
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
 
     return true if KING_VECTORS.include?(diff)
@@ -238,10 +239,10 @@ class King < ChessPiece
     false
   end
 
-  def check?(board)
-    own_location = board.get_location_of_piece(self)
-    own_addr = board.encode(own_location)
+  def check?
+    own_location = @board.get_location_of_piece(self)
+    own_addr = @board.encode(own_location)
 
-    board.square_is_under_attack(own_addr, @enemy)
+    @board.square_is_under_attack(own_addr, @enemy)
   end
 end
