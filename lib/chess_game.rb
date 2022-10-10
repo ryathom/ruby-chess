@@ -128,7 +128,16 @@ class ChessGame
       return false
     end
 
-    @board.move_piece_to_address(piece, target_addr)
+    if promo != ""
+      if request_promo(piece_name, target_addr, promo)
+        @board.move_piece_to_address(piece, target_addr)
+        promote(target_addr, promo)
+      else
+        return false
+      end
+    else
+      @board.move_piece_to_address(piece, target_addr)
+    end
   end
 
   def request_move(piece, disambig, target_addr, promo)
@@ -149,7 +158,39 @@ class ChessGame
       return false
     end
 
-    @board.move_piece_to_address(piece, target_addr)
+    if promo != ""
+      if request_promo(piece_name, target_addr, promo)
+        @board.move_piece_to_address(piece, target_addr)
+        promote(target_addr, promo)
+      else
+        return false
+      end
+    else
+      @board.move_piece_to_address(piece, target_addr)
+    end
+  end
+
+  def request_promo(piece_name, target_addr, promo)
+    rank = @board.lookup(target_addr)[0]
+
+    unless [0, 7].include?(rank)
+      puts "Error - can only promote on end rank"
+      return false
+    end
+
+    unless piece_name == 'Pawn'
+      puts "Error - can only promote pawns"
+      return false
+    end
+
+    true
+  end
+
+  def promote(target_addr, promo)
+    name = piece_name(promo)
+    piece = Object.const_get(name).new(@current_player.color, @board)
+    
+    @board.instantiate_at_addr(piece, target_addr)
   end
 
   def disambiguate(list, disambig)

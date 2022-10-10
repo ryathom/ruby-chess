@@ -87,6 +87,13 @@ class ChessBoard
     addr = file.to_s + rank.to_s
   end
 
+  def instantiate_at_addr(piece, addr)
+    location = lookup(addr)
+    x = location[0]
+    y = location[1]
+    @board[x][y] = piece
+  end
+
   def within_bounds(pointer)
     pointer[0].between?(0,7) && pointer[1].between?(0,7)
   end
