@@ -121,23 +121,7 @@ class ChessGame
     piece_list = @board.find_pieces(piece_name, @current_player.color)
     piece_list.select! {|p| p.check_valid_capture(target_addr)}
     
-    return false unless piece = disambiguate(piece_list, disambig)
-
-    if piece.nil?
-      puts "Error - no valid piece found to make this capture"
-      return false
-    end
-
-    if promo != ""
-      if request_promo(piece_name, target_addr, promo)
-        @board.move_piece_to_address(piece, target_addr)
-        promote(target_addr, promo)
-      else
-        return false
-      end
-    else
-      @board.move_piece_to_address(piece, target_addr)
-    end
+    general_request(piece_list, disambig, target_addr, promo)
   end
 
   def request_move(piece, disambig, target_addr, promo)
@@ -150,7 +134,11 @@ class ChessGame
 
     piece_list = @board.find_pieces(piece_name, @current_player.color)
     piece_list.select! {|p| p.check_valid_move(target_addr)}
-    
+
+    general_request(piece_list, disambig, target_addr, promo)
+  end
+
+  def general_request(piece_list, disambig, target_addr, promo)
     return false unless piece = disambiguate(piece_list, disambig)
 
     if piece.nil?
@@ -159,7 +147,7 @@ class ChessGame
     end
 
     if promo != ""
-      if request_promo(piece_name, target_addr, promo)
+      if request_promo(piece, target_addr, promo)
         @board.move_piece_to_address(piece, target_addr)
         promote(target_addr, promo)
       else
@@ -170,7 +158,7 @@ class ChessGame
     end
   end
 
-  def request_promo(piece_name, target_addr, promo)
+  def request_promo(piece, target_addr, promo)
     rank = @board.lookup(target_addr)[0]
 
     unless [0, 7].include?(rank)
@@ -178,7 +166,7 @@ class ChessGame
       return false
     end
 
-    unless piece_name == 'Pawn'
+    unless piece.class.name == 'Pawn'
       puts "Error - can only promote pawns"
       return false
     end
