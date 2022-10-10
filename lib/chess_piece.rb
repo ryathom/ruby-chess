@@ -4,13 +4,14 @@
 # ------------  Base class    ------------
 # ----------------------------------------
 class ChessPiece
-  attr_reader :color
+  attr_reader :color, :en_passant_flag
 
   def initialize(color, board)
     @color = color
     @board = board
     @moved = false
     @enemy = enemy
+    @en_passant_flag = false
   end
 
   def white?
@@ -133,6 +134,22 @@ class Pawn < ChessPiece
   def check_valid_diagonal(diff)
     return [[1, -1], [1, 1]].include?(diff) if white?
     return [[-1, -1], [-1, 1]].include?(diff) if black?
+  end
+
+  def set_moved
+    set_en_passant_flag
+    @moved = true
+  end
+
+  def set_en_passant_flag
+    return if @moved == true
+
+    rank = @board.get_location_of_piece(self)[0]
+    @en_passant_flag = true if [3, 4].include?(rank)
+  end
+
+  def clear_en_passant_flag
+    @en_passant_flag = false
   end
 end
 

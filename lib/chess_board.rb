@@ -124,8 +124,8 @@ class ChessBoard
   def move_piece_to_location(piece, location)
     x = location[0]
     y = location[1]
-    piece.set_moved
     @board[x][y] = remove_piece(piece)
+    piece.set_moved
   end
 
   def move_piece_to_address(piece, addr)

@@ -27,6 +27,7 @@ class ChessGame
     
     loop do
       announce_check
+      clear_en_passant_flags
       puts "#{@current_player.name}, enter your move:"
       turn_complete = false
       until turn_complete
@@ -51,6 +52,11 @@ class ChessGame
     if king.check?
       puts "#{@current_player.name}, you are in check."
     end
+  end
+
+  def clear_en_passant_flags
+    pawns = @board.find_pieces('Pawn', @current_player.color)
+    pawns.each { |p| p.clear_en_passant_flag }
   end
 
   # ----------------------------------------
