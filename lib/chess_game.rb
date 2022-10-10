@@ -169,7 +169,11 @@ class ChessGame
 
     return list[0] if list.length == 1
 
-    puts "Error - multiple valid pieces found, please disambiguate"
+    if list.length > 1
+      puts "Error - multiple valid pieces found, please disambiguate"
+    else
+      puts "Error - no valid pieces found"
+    end
     return false
   end
 
@@ -189,6 +193,7 @@ class ChessGame
     true
   end
 
+  # REVISIT - can turn this into a dictionary/map
   def piece_name(piece)
     case piece
     when ''

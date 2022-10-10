@@ -163,7 +163,7 @@ class ChessBoard
   def square_attackers(addr, color)
     piece_list = find_all_pieces(color)
 
-    piece_list.select! {|p| p.check_valid_capture(addr)}
+    piece_list.select! {|p| p.check_threat(addr)}
   end
 
   def square_is_under_attack(addr, color)

@@ -81,6 +81,11 @@ class ChessPiece
   def check_valid_capture(target_addr)
     check_valid_move(target_addr)
   end
+
+  # Non-king pieces use capture logic for threatening
+  def check_threat(target_addr)
+    check_valid_capture(target_addr)
+  end
 end
 
 # ----------------------------------------
@@ -230,8 +235,24 @@ class King < ChessPiece
                   [1, 1], [-1, 1], [1, -1], [-1, -1]].freeze
 
   def check_valid_move(target_addr)
-    return false if @board.square_is_under_attack(target_addr, @enemy)
+    if @board.square_is_under_attack(target_addr, @enemy)
+      # REVISIT - more elegant error reporting methods?
+      puts "Error - can't move king into check."
+      return false
+    end
 
+    target_location = @board.lookup(target_addr)
+    own_location = @board.get_location_of_piece(self)
+    diff = diff_locations(own_location, target_location)
+
+    return true if KING_VECTORS.include?(diff)
+
+    false
+  end
+
+  # King needs a seperate threat method that doesn't check for check
+  # or we get an infinite loop
+  def check_threat(target_addr)
     target_location = @board.lookup(target_addr)
     own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
