@@ -87,6 +87,10 @@ class ChessBoard
     addr = file.to_s + rank.to_s
   end
 
+  def within_bounds(pointer)
+    pointer[0].between?(0,7) && pointer[1].between?(0,7)
+  end
+
   def find_pieces(type, color)
     @board.flatten.select do |piece|
       piece && (piece.class.name == type) && (piece.color == color)
@@ -153,6 +157,20 @@ class ChessBoard
   def remove_piece_at_address(address)
     piece = get_piece_at_address(address)
     remove_piece(piece)
+  end
+
+  def check_for_en_passant(target_addr)
+    location = lookup(target_addr)
+
+    north = [location[0]-1, location[1]]
+    south = [location[0]+1, location[1]]
+
+    pieces = []
+
+    pieces << get_piece_at_location(north) if within_bounds(north)
+    pieces << get_piece_at_location(south) if within_bounds(south)
+
+    pieces.compact.select { |p| p.en_passant_flag == true }
   end
 
   # ----------------------------------------

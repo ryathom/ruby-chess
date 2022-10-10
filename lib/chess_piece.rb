@@ -112,11 +112,17 @@ class Pawn < ChessPiece
   end
 
   def check_valid_capture(target_addr)
+    en_passant_target = @board.check_for_en_passant(target_addr)[0]
+
     target_location = @board.lookup(target_addr)
     own_location = @board.get_location_of_piece(self)
     diff = diff_locations(own_location, target_location)
 
-    check_valid_diagonal(diff)
+    valid_diag = check_valid_diagonal(diff)
+
+    @board.remove_piece(en_passant_target) if valid_diag && en_passant_target
+
+    valid_diag
   end
 
   def check_valid_single_move(diff)

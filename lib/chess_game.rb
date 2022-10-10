@@ -184,6 +184,8 @@ class ChessGame
   end
 
   def check_for_enemy_piece(target_addr)
+    return true if @board.check_for_en_passant(target_addr)
+
     target = @board.get_piece_at_address(target_addr)
 
     if target.nil?
