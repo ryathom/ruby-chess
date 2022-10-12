@@ -16,6 +16,17 @@ module SaveLoad
     save.close
   end
 
+  def load_game
+    puts Dir.entries("saves")
+    puts nil
+    puts "Enter the name of the file to load:"
+    input = gets.chomp
+
+    load_game = File.open("saves/#{input}")
+    data = load_game.read
+    Marshal.load(data)
+  end
+
   def prompt_filename
     puts "Choose a file name for your saved game: "
     input = gets.chomp

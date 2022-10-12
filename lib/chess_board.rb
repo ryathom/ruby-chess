@@ -3,6 +3,8 @@
 require_relative 'chess_piece'
 
 class ChessBoard
+  attr_accessor :save_players, :save_current_player
+
   def initialize
     @board = Array.new(8) { Array.new(8, nil) }
     initial_setup

@@ -14,14 +14,33 @@ class ChessGame
   include SaveLoad
 
   def initialize
-    @board = ChessBoard.new
+    new_or_load_game
     @players = [Player.new('white'), Player.new('black')]
     @current_player = @players[0]
   end
 
   def visualize_board
-    system 'clear'
+    # system 'clear'
     @board.visualize_board
+  end
+
+  def new_or_load_game
+    input = 0
+    until [1, 2].include?(input)
+      puts "Press 1 to start a new game or 2 to load a saved game:"
+      input = gets.chomp.to_i
+    end
+
+    case input
+    when 1
+      @board = ChessBoard.new()
+      @players = [Player.new('white'), Player.new('black')]
+      @current_player = @players[0]
+    when 2
+      @board = load_game
+      @players = @board.save_players
+      @current_player = @board.save_current_player
+    end
   end
 
   # Temporary main method for initial debug
@@ -67,6 +86,8 @@ class ChessGame
   # ----------------------------------------
   def interpret_command(input)
     if save?(input)
+      @board.save_players = @players
+      @board.save_current_player = @current_player
       save_game(@board)
     elsif castling?(input)
       if queenside?(input)
