@@ -56,7 +56,7 @@ class ChessPiece
   end
 
   def within_bounds(pointer)
-    pointer[0].between?(0,7) && pointer[1].between?(0,7)
+    pointer[0].between?(0, 7) && pointer[1].between?(0, 7)
   end
 
   def check_vectors(own_location, target_location, vectors)

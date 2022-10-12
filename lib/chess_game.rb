@@ -2,6 +2,7 @@
 
 require_relative 'chess_board'
 require_relative 'player'
+require_relative 'save_load'
 
 CASTLING = /(([Oo0](-[Oo0]){1,2}))/
 QUEENSIDE = /(([Oo0](-[Oo0]){2}))/
@@ -10,6 +11,8 @@ SPLIT_COMMAND = /([KQRBN]?)([a-h]?[1-8]?)(x?)([a-h][1-8])([QRBN]?)/
 SPLIT_DISAMBIG = /([a-h]?)([1-8]?)/
 
 class ChessGame
+  include SaveLoad
+
   def initialize
     @board = ChessBoard.new
     @players = [Player.new('white'), Player.new('black')]
@@ -63,7 +66,9 @@ class ChessGame
   # ---  Command interpretation methods  ---
   # ----------------------------------------
   def interpret_command(input)
-    if castling?(input)
+    if save?(input)
+      save_game(@board)
+    elsif castling?(input)
       if queenside?(input)
         queenside_castle_request
       else
@@ -79,6 +84,12 @@ class ChessGame
 
       request_command(piece, disambig, capture, target_addr, promo)
     end
+  end
+
+  def save?(input)
+    return true if input == 'save'
+
+    false
   end
 
   def castling?(input)
@@ -317,6 +328,5 @@ class ChessGame
 
     return rook[0]
   end
-
 end
 

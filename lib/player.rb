@@ -36,6 +36,8 @@ class Player
   end
 
   def verify_input(input)
+    return input if input == 'save'
+
     return input if input.match(NOTATION)
 
     nil
